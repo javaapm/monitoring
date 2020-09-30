@@ -1,0 +1,50 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vpetclinic
+  labels:
+    name: vpetclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: vpetclinic
+  template:
+    metadata:
+      labels:
+        name: vpetclinic
+    spec:
+      serviceAccountName: egagent
+      volumes:
+      - name: btmmount
+        hostPath: 
+          path: /opt/egbtm
+          type: DirectoryOrCreate
+      containers:
+      - name: vpetclinic
+        image: egapm/springboot:petclinic-tomcat-openjdk8jre 
+        ports:
+        - containerPort: 8080
+        # securityContext:
+          # privileged: true
+        env:
+        - name: JAVA_OPTS
+          value: "-javaagent:/opt/egbtm/eg_btm.jar"
+        volumeMounts:
+        - name: btmmount
+          mountPath: /opt/egbtm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vpetclinic
+  labels:
+    name: vpetclinic
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    name: vpetclinic
