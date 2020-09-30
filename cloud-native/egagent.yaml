@@ -41,7 +41,7 @@ spec:
           type: DirectoryOrCreate
       containers:
       - name: egagent
-        image: eginnovations/btmlatest 
+        image: egapm/egagent_714:latest 
         securityContext:
           privileged: true
         env:
