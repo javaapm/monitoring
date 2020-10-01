@@ -46,7 +46,7 @@ spec:
           privileged: true
         env:
         - name: EG_MANAGER
-          value: "<<HOST>>"
+          value: "apm.eginnovations.com>"
         - name: EG_MANAGER_PORT
           value: "443"
         - name: EG_MANAGER_SSL
